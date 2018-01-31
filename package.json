@@ -2,13 +2,14 @@
   "name": "puppeteer-playground",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm install && cd react-ui/ && npm install && npm run build && cd .. && node server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.16.2",
     "puppeteer": "^1.0.0"
   }
 }
