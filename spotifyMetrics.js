@@ -1,12 +1,21 @@
 const puppeteer = require("puppeteer");
+const devices = require('puppeteer/DeviceDescriptors');
 
-module.exports.spotifyMetrics = async function() {
+module.exports.spotifyMetrics = async function({ device }) {
   const browser = await puppeteer.launch({ headless: true, slowMo: 250 });
   const page = await browser.newPage();
-  await page.setViewport({
-    width: 1280,
-    height: 1000
-  });
+
+  if (device === "mobile") {
+    await page.emulate(devices['iPhone 6']);
+    await page._client.send('Network.emulateNetworkConditions', {
+        offline: false,
+        latency: 200, // ms
+        downloadThroughput: 1500 * 1024 / 8, // 1500 kb/s
+        uploadThroughput: 700 * 1024 / 8, // 700 kb/s
+      });
+    await page._client.send('Emulation.setCPUThrottlingRate', { rate: 4 });
+  }
+
   await page.goto("https://spotify.com/");
 
   // Browswer Performance
